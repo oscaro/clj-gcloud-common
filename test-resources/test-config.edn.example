@@ -1,0 +1,4 @@
+{:project-id "my-project-id"
+ :svc-account {:project-id   "my-project-id"
+               :client-id    "my-client-id"
+               :client-email "my-client-email@something.iam.gserviceaccount.com"}}
