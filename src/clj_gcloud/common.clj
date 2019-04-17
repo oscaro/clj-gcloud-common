@@ -3,10 +3,11 @@
             [clojure.spec.alpha :as s]
             [clj-gcloud.duration :as d])
   (:import (com.google.auth.oauth2 ServiceAccountCredentials)
-           (com.google.api.gax.core CredentialsProvider)
+           (com.google.api.gax.core CredentialsProvider BackgroundResource)
            (com.google.cloud ServiceOptions Service RetryOption ServiceOptions$Builder)
            (com.google.api.gax.rpc ClientSettings)
-           (com.google.api.gax.retrying RetrySettings)))
+           (com.google.api.gax.retrying RetrySettings)
+           (io.grpc ManagedChannel)))
 
 (defn option-mapper [f]
   "Spec conformer helper for options"
@@ -121,6 +122,32 @@
   ([type dims]
    (let [type (if (symbol? type) (eval type) type)]
      (-> (apply make-array type (repeat dims 0)) class .getName))))
+
+; Shutdown
+(def default-termination-timeout [30 :seconds])
+(defprotocol Shutdown
+  "Initiates an orderly shutdown in which preexisting calls continue but new calls are immediately cancelled.
+  If a timeout/unit is specified, it will wait for the resource to become terminated,
+  giving up if the timeout is reached."
+  (shutdown! [this] [this timeout unit]))
+
+(extend-type ManagedChannel
+  Shutdown
+  (shutdown!
+    ([this] (apply shutdown! this default-termination-timeout))
+    ([this timeout unit]
+     (doto this
+       (.shutdown)
+       (.awaitTermination timeout (get d/time-units unit))))))
+
+(extend-type BackgroundResource
+  Shutdown
+  (shutdown!
+    ([this] (apply shutdown! this default-termination-timeout))
+    ([this timeout unit]
+     (doto this
+       (.shutdown)
+       (.awaitTermination timeout (get d/time-units unit))))))
 
 ; Helper methods for logging
 (defmethod print-method CredentialsProvider [^CredentialsProvider cp w]
