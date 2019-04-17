@@ -1,12 +1,12 @@
 (ns clj-gcloud.common
   (:require [clojure.java.io :as io]
-            [clojure.spec.alpha :as s])
-  (:import (java.lang.reflect Method)
-           (com.google.auth.oauth2 ServiceAccountCredentials)
+            [clojure.spec.alpha :as s]
+            [clj-gcloud.duration :as d])
+  (:import (com.google.auth.oauth2 ServiceAccountCredentials)
            (com.google.api.gax.core CredentialsProvider)
            (com.google.cloud ServiceOptions Service RetryOption ServiceOptions$Builder)
            (com.google.api.gax.rpc ClientSettings)
-           (org.threeten.bp Duration)))
+           (com.google.api.gax.retrying RetrySettings)))
 
 (defn option-mapper [f]
   "Spec conformer helper for options"
@@ -18,57 +18,42 @@
 ;; RetrySettings
 (def default-retry-settings (ServiceOptions/getDefaultRetrySettings))
 
-(defn ^RetryOption ->RetryOption [[k v]]
+(defn ^RetryOption ->RetryOption
+  [[k v]]
   (case k
-    :total-timeout (RetryOption/totalTimeout (Duration/ofSeconds v))
-    :initial-retry-delay (RetryOption/initialRetryDelay (Duration/ofSeconds v))
+    :total-timeout (RetryOption/totalTimeout (d/->duration v))
+    :initial-retry-delay (RetryOption/initialRetryDelay (d/->duration v))
     :retry-delay-multiplier (RetryOption/retryDelayMultiplier v)
-    :max-retry-delay (RetryOption/maxRetryDelay (Duration/ofSeconds v))
+    :max-retry-delay (RetryOption/maxRetryDelay (d/->duration v))
     :max-attempts (RetryOption/maxAttempts v)
-    :jittered (RetryOption/jittered v)
+    :jittered? (RetryOption/jittered v)
     nil))
 
+(s/def ::duration (s/tuple pos-int? d/chrono-units))
+(s/def :retry.option/total-timeout ::duration)
+(s/def :retry.option/initial-retry-delay ::duration)
+(s/def :retry.option/retry-delay-multiplier double?)
+(s/def :retry.option/max-retry-delay ::duration)
+(s/def :retry.option/jittered? boolean?)
 (s/def ::retry-settings
   (s/and (s/keys :opt-un [:retry.option/total-timeout
                           :retry.option/initial-retry-delay
                           :retry.option/retry-delay-multiplier
                           :retry.option/max-retry-delay
-                          :retry.option/jittered])
+                          :retry.option/jittered?])
          (s/conformer (option-mapper ->RetryOption))))
-(s/def :retry.option/total-timeout pos-int?)
-(s/def :retry.option/initial-retry-delay pos-int?)
-(s/def :retry.option/retry-delay-multiplier double?)
-(s/def :retry.option/max-retry-delay pos-int?)
-(s/def :retry.option/jittered boolean?)
-
-(s/def :service.options/project-id string?)
-(s/def :service.options/credentials string?)
-(s/def :service.options/retry-settings ::retry-settings)
-(s/def ::service-options (s/keys :opt-un [:service.options/project-id
-                                          :service.options/credentials
-                                          :service.options/retry-settings]))
-
 (defn mk-retry-settings [settings]
-  (->> settings
-       (s/conform ::retry-settings)
-       (into-array RetryOption)
-       (RetryOption/mergeToSettings default-retry-settings)))
+  (if (s/valid? ::retry-settings settings)
+    (->> settings
+         (s/conform ::retry-settings)
+         (into-array RetryOption)
+         (RetryOption/mergeToSettings default-retry-settings))
+    (throw (ex-info (s/explain-str ::retry-settings settings) settings))))
 
+;; Credentials
 (defn mk-credentials
   [json-path]
   (ServiceAccountCredentials/fromStream (io/input-stream json-path)))
-
-(defn build-service
-  ^Service
-  [^ServiceOptions$Builder builder {:keys [project-id credentials retry-settings] :as opts}]
-  (if (or (nil? opts) (s/valid? ::service-options opts))
-    (let [builder (cond-> builder
-                    project-id (.setProjectId project-id)
-                    credentials (.setCredentials (mk-credentials credentials))
-                    retry-settings (.setRetrySettings (mk-retry-settings retry-settings)))]
-      (.getService ^ServiceOptions (.build builder)))
-    (throw
-      (ex-info (with-out-str (s/explain ::service-options opts)) opts))))
 
 (defn fixed-credentials
   "Returns a credentials provider which will always returns the
@@ -79,7 +64,15 @@
     (reify CredentialsProvider
       (getCredentials [_] credentials))))
 
-(def ^:private default-project (ServiceOptions/getDefaultProjectId))
+(defn mk-credentials-provider
+  "Creates a new credentials provider"
+  [creds]
+  (cond
+    (instance? CredentialsProvider creds) creds
+    (string? creds) (fixed-credentials creds)
+    :else nil))
+
+(def default-project (ServiceOptions/getDefaultProjectId))
 
 (defn get-project
   "Returns the project id using the credentials located in the client settings.
@@ -100,6 +93,25 @@
          (.getProjectId svc-accnt))
        default-project))))
 
+;; Misc
+(s/def :service.options/project-id string?)
+(s/def :service.options/credentials string?)
+(s/def :service.options/retry-settings ::retry-settings)
+(s/def ::service-options (s/keys :opt-un [:service.options/project-id
+                                          :service.options/credentials
+                                          :service.options/retry-settings]))
+(defn build-service
+  ^Service
+  [^ServiceOptions$Builder builder {:keys [project-id credentials retry-settings] :as opts}]
+  (if (or (nil? opts) (s/valid? ::service-options opts))
+    (let [builder (cond-> builder
+                    project-id (.setProjectId project-id)
+                    credentials (.setCredentials (mk-credentials credentials))
+                    retry-settings (.setRetrySettings (mk-retry-settings retry-settings)))]
+      (.getService ^ServiceOptions (.build builder)))
+    (throw
+      (ex-info (with-out-str (s/explain ::service-options opts)) opts))))
+
 (defn array-type
   "Return a string representing the type of an array with dimensions and a type.
   For primitives, use a type like Integer/TYPE.
@@ -109,3 +121,19 @@
   ([type dims]
    (let [type (if (symbol? type) (eval type) type)]
      (-> (apply make-array type (repeat dims 0)) class .getName))))
+
+; Helper methods for logging
+(defmethod print-method CredentialsProvider [^CredentialsProvider cp w]
+  (print-method {:creds (.getCredentials cp)} w))
+(defmethod print-method RetrySettings [^RetrySettings rs w]
+  (print-method
+    {:total-timeout          (.getTotalTimeout rs)
+     :initial-retry-delay    (.getInitialRetryDelay rs)
+     :retry-delay-multiplier (.getRetryDelayMultiplier rs)
+     :max-retry-delay        (.getMaxRetryDelay rs)
+     :max-attempts           (.getMaxAttempts rs)
+     :jittered?              (.isJittered rs)
+     :initial-rpc-timeout    (.getInitialRpcTimeout rs)
+     :rpc-timeout-multiplier (.getRpcTimeoutMultiplier rs)
+     :max-rpc-timeout        (.getMaxRpcTimeout rs)}
+    w))

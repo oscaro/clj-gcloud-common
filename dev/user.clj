@@ -1,4 +1,8 @@
 (ns user
-  (:require [clj-gcloud.common :refer :all]
-            [clj-gcloud.coerce :refer :all]
-            [clojure.spec.alpha :as s]))
+  (:require [clojure.pprint :refer [pprint]]
+            [clojure.repl :refer [doc pst source]]
+            [clojure.tools.namespace.repl :refer [refresh]]))
+
+(comment
+  (refresh)
+  )
