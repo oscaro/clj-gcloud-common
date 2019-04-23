@@ -11,44 +11,59 @@
            (com.google.cloud.pubsub.v1 SubscriptionAdminSettings)
            (org.threeten.bp Duration)))
 
-
 (def test-creds "./test-resources/service-account.json")
 
-(let [config (edn/read-string (slurp "./test-resources/test-config.edn"))]
-  (def test-project-id (:project-id config))
-  (def test-svc-account (:svc-account config)))
+(defn load-test-config
+  []
+  (edn/read-string (slurp "./test-resources/test-config.edn")))
 
-(deftest mk-retry-settings-test
-  (let [settings (bean (mk-retry-settings {:total-timeout          [10 :minutes]
-                                           :initial-retry-delay    [30 :seconds]
-                                           :retry-delay-multiplier 1.5
-                                           :max-retry-delay        [1 :hours]
-                                           :max-attempts           1000
-                                           :jittered?              true}))]
-    (are [x y]
-      (= x y)
-      (:totalTimeout settings) (Duration/ofMinutes 10)
-      (:initialRetryDelay settings) (Duration/ofSeconds 30)
-      (:retryDelayMultiplier settings) 1.5
-      (:maxRetryDelay settings) (Duration/ofHours 1)
-      (:maxAttempts settings) 1000
-      (:jittered settings) true)))
+(deftest ^:integration build-service-test
 
-(deftest fixed-credentials-test
+  (testing "it should build a service of each type using the default settings"
+    (are [builder]
+         (let [test-config (load-test-config)
+               test-project-id (:project-id test-config)
+               test-svc-account (:svc-account test-config)
+
+               ^Service service (build-service builder {:project-id  test-project-id
+                                                        :credentials test-creds})
+               {:keys [project-id credentials retry-settings]} (->clj (.getOptions service))]
+           (is (and (= test-project-id project-id)
+                    (= test-svc-account credentials)
+                    (= (->clj default-retry-settings) retry-settings))))
+
+         (BigQueryOptions/newBuilder)
+         (DatastoreOptions/newBuilder)
+         (StorageOptions/newBuilder)))
+
+  (testing "retry settings can be supplied for greater fault tolerance"
+    (let [opts    {:retry-settings
+                   {:total-timeout          (.toSeconds (TimeUnit/MINUTES) 10)
+                    :max-retry-delay        60
+                    :retry-delay-multiplier 1.5
+                    :max-attempts           1000
+                    :jittered               false}}
+          service (build-service (StorageOptions/newBuilder) opts)
+          {:keys [retry-settings]} (->> service .getOptions ->clj)]
+      (is (= (assoc (:retry-settings opts) :initial-retry-delay 1)
+             retry-settings)))))
+
+(deftest ^:integration fixed-credentials-test
   (is (= (mk-credentials test-creds)
          (.getCredentials (fixed-credentials test-creds)))))
 
-(deftest get-project-test
+(deftest ^:integration get-project-test
+  (let [test-project-id (:project-id (load-test-config))]
 
-  (testing "Default project"
-    (is (= test-project-id (get-project))))
+    (testing "Default project"
+      (is (= test-project-id (get-project))))
 
-  (testing "Project located in service account"
-    (is (= test-project-id
-           (-> (SubscriptionAdminSettings/newBuilder)
-               (.setCredentialsProvider (fixed-credentials test-creds))
-               .build
-               get-project)))))
+    (testing "Project located in service account"
+      (is (= test-project-id
+             (-> (SubscriptionAdminSettings/newBuilder)
+                 (.setCredentialsProvider (fixed-credentials test-creds))
+                 .build
+                 get-project))))))
 
 (deftest build-service-test
 

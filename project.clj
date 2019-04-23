@@ -22,5 +22,6 @@
                      [org.clojure/tools.namespace "0.2.11"]
                      [io.grpc/grpc-netty-shaded "1.19.0" :exclusions [io.grpc/grpc-core]]]
     :source-paths   ["dev"]
-    :resource-paths ["test-resources"]}}
+    :resource-paths ["test-resources"]
+    :test-selectors {:ci (complement :integration)}}}
   :global-vars {*warn-on-reflection* true})
