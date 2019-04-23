@@ -18,5 +18,6 @@
                      [com.google.cloud/google-cloud-datastore "1.53.0"]
                      [org.clojure/tools.namespace "0.2.11"]]
     :source-paths   ["dev"]
-    :resource-paths ["test-resources"]}}
+    :resource-paths ["test-resources"]
+    :test-selectors {:ci (complement :integration)}}}
   :global-vars {*warn-on-reflection* true})

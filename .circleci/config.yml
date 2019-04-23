@@ -23,12 +23,6 @@ jobs:
 
     steps:
       - checkout
-      - run:
-          name: 'Setup test config'
-          command: 'echo "$CI_TEST_CONFIG_CONTENT" > test-resources/test-config.edn'
-      - run:
-          name: 'Setup test service account'
-          command: 'echo "$CI_SERVICE_ACCOUNT" > test-resources/service-account.json'
 
       # Download and cache dependencies
       - restore_cache:
@@ -45,4 +39,4 @@ jobs:
           key: v1-dependencies-{{ checksum "project.clj" }}
 
       # run tests!
-      - run: lein test
+      - run: lein test :ci
