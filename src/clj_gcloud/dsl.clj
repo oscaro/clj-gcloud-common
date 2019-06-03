@@ -2,13 +2,17 @@
   (:import (com.google.common.base CaseFormat Converter)
            (com.google.api.client.json JsonFactory)
            (com.google.api.client.json.jackson2 JacksonFactory)
-           (java.lang.reflect Method)))
+           (java.lang.reflect Method)
+           (java.util EnumSet)))
 
 (def ^:private ^Converter lh->lc
   (.converterTo CaseFormat/LOWER_HYPHEN CaseFormat/LOWER_CAMEL))
 
 (def ^:private ^Converter lh->uu
   (.converterTo CaseFormat/LOWER_HYPHEN CaseFormat/UPPER_UNDERSCORE))
+
+(def ^:private ^Converter uu->lh
+  (.converterTo CaseFormat/UPPER_UNDERSCORE CaseFormat/LOWER_HYPHEN))
 
 (defn ^String kw->field-name
   "Converts a keyword into a field name"
@@ -19,6 +23,21 @@
   "Converts a keyword into a enum string"
   [kw]
   (->> kw name (.convert lh->uu)))
+
+(defn enum->kw
+  "Converts an enum into a keyword"
+  [^Enum e]
+  (->> (.name e)
+       (.convert uu->lh)
+       keyword))
+
+(defn enums-as-map
+  "Creates a map of keywords -> enums"
+  [c]
+  (reduce
+    (fn [m e] (assoc m (enum->kw e) e))
+    {}
+    (EnumSet/allOf c)))
 
 (defn dsl->google-json-map
   "Recursively transforms a DSL map to conform to the Google JSON format:
