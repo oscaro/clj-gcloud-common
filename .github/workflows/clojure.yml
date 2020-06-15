@@ -9,6 +9,10 @@ jobs:
     - uses: actions/checkout@v2
     - name: Install dependencies
       run: lein -U deps
+    - name: Setup test config
+      run: 'echo "$TEST_CONFIG" > test-resources/test-config.edn'
+      env:
+        TEST_CONFIG: ${{ secrets.TEST_CONFIG }}
     - name: Run tests
       run: lein test
     - name: Deploy
