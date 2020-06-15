@@ -13,6 +13,10 @@ jobs:
       run: 'echo "$TEST_CONFIG" > test-resources/test-config.edn'
       env:
         TEST_CONFIG: ${{ secrets.TEST_CONFIG }}
+    - name: Setup test service account
+      run: 'echo "$TEST_SERVICE_ACCOUNT" > test-resources/service-account.json'
+      env:
+        TEST_SERVICE_ACCOUNT: ${{ secrets.TEST_SERVICE_ACCOUNT }}
     - name: Run tests
       run: lein test
     - name: Deploy
