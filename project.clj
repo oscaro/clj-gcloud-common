@@ -8,9 +8,7 @@
                                       :password :env/clojars_password
                                       :sign-releases false}]
                         ["releases"  {:url "https://repo.clojars.org"
-                                      :username :env/clojars_username
-                                      :password :env/clojars_password
-                                      :sign-releases false}]]
+                                      :creds :gpg}]]
   :dependencies [[org.clojure/clojure "1.10.1" :scope "provided"]
                  [cheshire "5.9.0"]
                  [com.google.cloud/google-cloud-core "1.91.3"]

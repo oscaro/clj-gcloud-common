@@ -19,8 +19,8 @@ jobs:
         TEST_SERVICE_ACCOUNT: ${{ secrets.TEST_SERVICE_ACCOUNT }}
     - name: Run tests
       run: lein test
-    - name: Deploy
-      if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/devel'
+    - name: Deploy snapshots
+      if: github.ref == 'refs/heads/devel'
       run: lein deploy
       env:
         CLOJARS_USERNAME: ${{ secrets.CLOJARS_USERNAME }}
