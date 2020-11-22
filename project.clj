@@ -32,7 +32,7 @@
                      [com.google.cloud/google-cloud-storage "1.100.0"]
                      [com.google.cloud/google-cloud-datastore "1.100.0" :exclusions [io.grpc/grpc-api
                                                                                      io.grpc/grpc-core]]
-                     [org.clojure/tools.namespace "0.3.1"]]
+                     [org.clojure/tools.namespace "1.0.0"]]
     :source-paths   ["dev"]
     :resource-paths ["test-resources"]
     :test-selectors {:ci (complement :integration)}}}
