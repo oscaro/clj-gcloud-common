@@ -14,12 +14,12 @@
                  [com.google.cloud/google-cloud-core-http "1.94.4"]
                  ;; The dependencies below were carefully added and excluded
                  ;; in order to remove all confusing warnings.
-                 [com.google.code.gson/gson "2.8.5"]
-                 [com.google.guava/guava "28.1-jre"]
-                 [io.grpc/grpc-api "1.24.1"]
-                 [io.grpc/grpc-core "1.24.1" :exclusions [com.google.errorprone/error_prone_annotations
+                 [com.google.code.gson/gson "2.8.6"]
+                 [com.google.guava/guava "29.0-jre"]
+                 [io.grpc/grpc-api "1.36.1"]
+                 [io.grpc/grpc-core "1.36.1" :exclusions [com.google.errorprone/error_prone_annotations
                                                           io.grpc/grpc-api]]
-                 [com.google.errorprone/error_prone_annotations "2.3.3"]]
+                 [com.google.errorprone/error_prone_annotations "2.5.1"]]
   :profiles
   {:dev
    {:dependencies   [[com.google.cloud/google-cloud-bigquery "1.127.11"]
