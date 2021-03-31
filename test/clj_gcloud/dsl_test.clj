@@ -1,6 +1,7 @@
 (ns clj-gcloud.dsl-test
-  (:require [clojure.test :refer :all]
-            [clj-gcloud.dsl :refer :all]))
+  (:require
+   [clojure.test :refer [deftest is]]
+   [clj-gcloud.dsl :refer [dsl->google-json-map kw->enum-str kw->field-name]]))
 
 (deftest kw->field-name-test
   (is (= "tableId" (kw->field-name :table-id))))

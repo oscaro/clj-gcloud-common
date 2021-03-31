@@ -1,15 +1,16 @@
 (ns clj-gcloud.common-test
-  (:require [clojure.test :refer :all]
-            [clojure.edn :as edn]
-            [clj-gcloud.common :refer :all]
-            [clj-gcloud.coerce :refer [->clj]]
-            [clojure.java.io :as io])
-  (:import (com.google.cloud Service RetryOption)
-           (com.google.cloud.bigquery BigQueryOptions BigQuery$QueryOption)
-           (com.google.cloud.datastore DatastoreOptions)
-           (com.google.cloud.storage StorageOptions)
-           (com.google.cloud.pubsub.v1 SubscriptionAdminSettings)
-           (org.threeten.bp Duration)))
+  (:require
+   [clj-gcloud.coerce :refer [->clj]]
+   [clj-gcloud.common :refer [array-type build-service default-retry-settings fixed-credentials get-project mk-credentials]]
+   [clojure.test :refer [are deftest is testing]]
+   [clojure.edn :as edn])
+  (:import
+   (com.google.cloud Service RetryOption)
+   (com.google.cloud.bigquery BigQueryOptions BigQuery$QueryOption)
+   (com.google.cloud.datastore DatastoreOptions)
+   (com.google.cloud.pubsub.v1 SubscriptionAdminSettings)
+   (com.google.cloud.storage StorageOptions)
+   (org.threeten.bp Duration)))
 
 (def test-creds "./test-resources/service-account.json")
 

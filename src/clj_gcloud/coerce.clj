@@ -1,12 +1,13 @@
 (ns clj-gcloud.coerce
-  (:import (java.util Iterator List Map)
-           (com.google.cloud ByteArray ServiceOptions)
-           (com.google.api.gax.paging Page)
-           (com.google.common.base CaseFormat Converter)
-           (org.threeten.bp Duration)
-           (java.util.concurrent TimeUnit)
-           (com.google.api.gax.retrying RetrySettings)
-           (com.google.auth.oauth2 ServiceAccountCredentials)))
+  (:import
+   (com.google.api.gax.paging Page)
+   (com.google.api.gax.retrying RetrySettings)
+   (com.google.auth.oauth2 ServiceAccountCredentials)
+   (com.google.cloud ByteArray ServiceOptions)
+   (com.google.common.base CaseFormat Converter)
+   (java.util Iterator List Map)
+   (java.util.concurrent TimeUnit)
+   (org.threeten.bp Duration)))
 
 (defn gc-bytes->bytes
   ^bytes

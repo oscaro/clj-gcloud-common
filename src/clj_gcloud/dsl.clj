@@ -1,9 +1,10 @@
 (ns clj-gcloud.dsl
-  (:import (com.google.common.base CaseFormat Converter)
-           (com.google.api.client.json JsonFactory)
-           (com.google.api.client.json.jackson2 JacksonFactory)
-           (java.lang.reflect Method)
-           (java.util EnumSet)))
+  (:import
+   (com.google.api.client.json JsonFactory)
+   (com.google.api.client.json.jackson2 JacksonFactory)
+   (com.google.common.base CaseFormat Converter)
+   (java.lang.reflect Method)
+   (java.util EnumSet)))
 
 (def ^:private ^Converter lh->lc
   (.converterTo CaseFormat/LOWER_HYPHEN CaseFormat/LOWER_CAMEL))

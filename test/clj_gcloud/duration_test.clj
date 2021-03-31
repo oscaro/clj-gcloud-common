@@ -1,6 +1,7 @@
 (ns clj-gcloud.duration-test
-  (:require [clojure.test :refer :all]
-            [clj-gcloud.duration :refer :all])
+  (:require
+   [clj-gcloud.duration :refer [->duration]]
+   [clojure.test :refer [are deftest]])
   (:import (org.threeten.bp Duration)))
 
 (deftest ->duration-test

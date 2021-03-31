@@ -1,16 +1,19 @@
 (ns clj-gcloud.common
-  (:require [clojure.java.io :as io]
-            [clojure.spec.alpha :as s]
-            [clj-gcloud.duration :as d])
-  (:import (com.google.auth.oauth2 ServiceAccountCredentials)
-           (com.google.api.gax.core CredentialsProvider BackgroundResource)
-           (com.google.cloud ServiceOptions Service RetryOption ServiceOptions$Builder)
-           (com.google.api.gax.rpc ClientSettings)
-           (com.google.api.gax.retrying RetrySettings)
-           (io.grpc ManagedChannel)))
+  (:require
+   [clj-gcloud.duration :as d]
+   [clojure.java.io :as io]
+   [clojure.spec.alpha :as s])
+  (:import
+   (com.google.auth.oauth2 ServiceAccountCredentials)
+   (com.google.api.gax.core CredentialsProvider BackgroundResource)
+   (com.google.api.gax.retrying RetrySettings)
+   (com.google.api.gax.rpc ClientSettings)
+   (com.google.cloud ServiceOptions Service RetryOption ServiceOptions$Builder)
+   (io.grpc ManagedChannel)))
 
-(defn option-mapper [f]
+(defn option-mapper
   "Spec conformer helper for options"
+  [f]
   (fn [opts]
     (->> opts
          (reduce #(conj %1 (f %2)) [])

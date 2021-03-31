@@ -1,8 +1,9 @@
 (ns clj-gcloud.duration
   (:require [clj-gcloud.dsl :as d])
-  (:import (org.threeten.bp Duration)
-           (org.threeten.bp.temporal ChronoUnit)
-           (java.util.concurrent TimeUnit)))
+  (:import
+   (java.util.concurrent TimeUnit)
+   (org.threeten.bp Duration)
+   (org.threeten.bp.temporal ChronoUnit)))
 
 (def time-units (d/enums-as-map TimeUnit))
 
