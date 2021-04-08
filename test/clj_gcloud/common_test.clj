@@ -24,11 +24,7 @@
 
 (deftest ^:integration get-project-test
   (let [test-project-id (:project-id (load-test-config))]
-
-    (testing "Default project"
-      (is (= test-project-id (get-project))))
-
-    (testing "Project located in service account"
+    (testing "retrieval of the project-id from a service account file"
       (is (= test-project-id
              (-> (SubscriptionAdminSettings/newBuilder)
                  (.setCredentialsProvider (fixed-credentials test-creds))
