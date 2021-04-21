@@ -1,7 +1,5 @@
 # Contributing to clj-gcloud-common
 
-The version is based on [`google-cloud-java`][java]’s version.
+The version is based on [`google-cloud-bom`][bom]’s where the minor version is suffixed with a `-N` integer increment specific to `clj-gcloud-common`.
 
-Current version: [0.71.0](https://github.com/googleapis/google-cloud-java/blob/v0.71.0/versions.txt).
-
-[java]: https://github.com/googleapis/google-cloud-java
+[bom]: https://github.com/googleapis/java-cloud-bom
