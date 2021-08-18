@@ -1,5 +1,5 @@
-(defproject com.oscaro/clj-gcloud-common "0.150-2.0-SNAPSHOT"
-  :description "Common library for all google cloud clojure wrappers"
+(defproject com.oscaro/clj-gcloud-common "0.159-1.0-SNAPSHOT"
+  :description "Common library for all goxogogle cloud clojure wrappers"
   :url "https://github.com/oscaro/clj-gcloud-common"
   :license {:name "Eclipse Public License"
             :url  "http://www.eclipse.org/legal/epl-v10.html"}
