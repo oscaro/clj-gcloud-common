@@ -25,7 +25,11 @@
   [[org.clojure/clojure "1.10.3" :scope "provided"]
    ;; This must correspond to the version pinned in BOM files.
    [com.google.cloud/google-cloud-core "2.0.5"]
-   [com.google.cloud/google-cloud-core-http "2.0.5"]]
+   [com.google.cloud/google-cloud-core-http "2.0.5"]
+   ;; grpc-api is required to compile ‘clj-gcloud.common’ namespace
+   [io.grpc/grpc-api "1.39.0"]
+   ;; Handle version mismatches between grpc-api and other deps.
+   [com.google.errorprone/error_prone_annotations "2.8.1"]]
   :profiles
   {:dev
    {:dependencies
