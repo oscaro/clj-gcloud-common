@@ -9,7 +9,7 @@ Common library for all Google Cloud Clojure wrappers.
 ## Usage
 
 ```clojure
-[com.oscaro/clj-gcloud-common "0.112-1.0"]
+[com.oscaro/clj-gcloud-common "0.150-1.0"]
 ```
 
 ## Tests
