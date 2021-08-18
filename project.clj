@@ -12,31 +12,27 @@
   :managed-dependencies
   ;; Google “Bill of Materials” (BOM) defines a combination of
   ;; dependency versions that work well with each other.
-  [[com.google.cloud/google-cloud-bom "0.150.0"
+  [[com.google.cloud/google-cloud-bom "0.159.0"
     :extension "pom"
     :scope "import"]
-   [com.google.cloud/google-cloud-shared-dependencies "0.20.1"
+   [com.google.cloud/google-cloud-shared-dependencies "2.0.1"
     :extension "pom"
     :scope "import"]
-   ;; Handle version mismatches between google-cloud-bom and
-   ;; google-cloud-shared-dependencies.
-   [com.google.protobuf/protobuf-java "3.15.3"]
-   [com.google.protobuf/protobuf-java-util "3.15.3"]
    ;; Select non-android Guava to work around Guava versioning mess
    ;; <https://github.com/google/guava/issues/2914>.
-   [com.google.guava/guava "30.1-jre"]]
+   [com.google.guava/guava "30.1.1-jre"]]
   :dependencies
   [[org.clojure/clojure "1.10.3" :scope "provided"]
    ;; This must correspond to the version pinned in BOM files.
-   [com.google.cloud/google-cloud-core "1.94.3"]
-   [com.google.cloud/google-cloud-core-http "1.94.3"]]
+   [com.google.cloud/google-cloud-core "2.0.5"]
+   [com.google.cloud/google-cloud-core-http "2.0.5"]]
   :profiles
   {:dev
    {:dependencies
-    [[com.google.cloud/google-cloud-bigquery "1.127.8"]
-     [com.google.cloud/google-cloud-pubsub "1.112.0"]
-     [com.google.cloud/google-cloud-storage "1.113.14"]
-     [com.google.cloud/google-cloud-datastore "1.106.0"]
+    [[com.google.cloud/google-cloud-bigquery "2.1.2"]
+     [com.google.cloud/google-cloud-pubsub "1.114.0"]
+     [com.google.cloud/google-cloud-storage "2.0.1"]
+     [com.google.cloud/google-cloud-datastore "2.0.1"]
      [org.clojure/tools.namespace "1.1.0"]]
     :source-paths   ["dev"]
     :resource-paths ["test-resources"]
