@@ -1,5 +1,9 @@
 # clj-gcloud-common
 
+## [0.159-1.0]
+
+* Bumped dependencies
+
 ## [0.150-1.0]
 
 ### Changed
