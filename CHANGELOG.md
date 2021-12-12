@@ -1,10 +1,16 @@
 # clj-gcloud-common
 
-## [0.159-1.0]
+## [Unreleased]
 
+### Changed
 * Bumped dependencies
 
-## [0.150-1.0]
+## [0.159-1.0] - 2021-08-08
+
+### Changed
+* Bumped dependencies
+
+## [0.150-1.0] - 2021-04-21
 
 ### Changed
 * Bumped dependencies
