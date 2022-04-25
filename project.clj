@@ -17,11 +17,7 @@
     :scope "import"]
    [com.google.cloud/google-cloud-shared-dependencies "2.10.0"
     :extension "pom"
-    :scope "import"]
-   ;; Select non-android Guava to work around Guava versioning mess
-   ;; <https://github.com/google/guava/issues/2914>.
-   ;[com.google.guava/guava "30.1.1-jre"]
-   ]
+    :scope "import"]]
   :dependencies
   [[org.clojure/clojure "1.10.3" :scope "provided"]
    ;; This must correspond to the version pinned in BOM files.
