@@ -19,7 +19,7 @@
     :extension "pom"
     :scope "import"]]
   :dependencies
-  [[org.clojure/clojure "1.10.3" :scope "provided"]
+  [[org.clojure/clojure "1.11.1" :scope "provided"]
    ;; This must correspond to the version pinned in BOM files.
    [com.google.cloud/google-cloud-core "2.6.1"]
    [com.google.cloud/google-cloud-core-http "2.6.1"]
