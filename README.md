@@ -8,9 +8,7 @@ Common library for all Google Cloud Clojure wrappers.
 
 ## Usage
 
-```clojure
-[com.oscaro/clj-gcloud-common "0.172-1.0"]
-```
+See the [API docs](https://cljdoc.org/d/com.oscaro/clj-gcloud-common/CURRENT/doc/readme)
 
 ## Tests
 
@@ -21,7 +19,7 @@ You need to create two files in order to run the tests:
 
 ## License
 
-Copyright © 2017-2021 Oscaro
+Copyright © 2017-2022 Oscaro
 
 Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.
