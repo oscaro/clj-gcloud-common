@@ -1,11 +1,13 @@
 (ns clj-gcloud.coerce-test
-  (:require [clojure.test :refer :all])
-  (:require [clj-gcloud.coerce :refer :all])
-  (:import (com.google.pubsub.v1 Topic)))
+  (:require
+   [clj-gcloud.coerce :as sut]
+   [clojure.test :refer [deftest is testing]])
+  (:import
+   (com.google.pubsub.v1 Topic)))
 
-(create-clj-coerce Topic [:name])
+(sut/create-clj-coerce Topic [:name])
 
 (deftest coercion-test
   (testing "It should map getters to keywords"
     (let [^Topic topic (-> (Topic/newBuilder) (.setName "test") .build)]
-      (is (= (.getName topic) (:name (->clj topic)))))))
+      (is (= (.getName topic) (:name (sut/->clj topic)))))))

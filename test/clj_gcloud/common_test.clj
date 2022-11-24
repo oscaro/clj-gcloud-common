@@ -1,9 +1,9 @@
 (ns clj-gcloud.common-test
   (:require
    [clj-gcloud.coerce :refer [->clj]]
-   [clj-gcloud.common :refer [array-type build-service default-retry-settings fixed-credentials get-project mk-credentials]]
-   [clojure.test :refer [are deftest is testing]]
-   [clojure.edn :as edn])
+   [clj-gcloud.common :as sut]
+   [clojure.edn :as edn]
+   [clojure.test :refer [are deftest is testing]])
   (:import
    (com.google.cloud Service RetryOption)
    (com.google.cloud.bigquery BigQueryOptions BigQuery$QueryOption)
@@ -19,17 +19,17 @@
   (edn/read-string (slurp "./test-resources/test-config.edn")))
 
 (deftest ^:integration fixed-credentials-test
-  (is (= (mk-credentials test-creds)
-         (.getCredentials (fixed-credentials test-creds)))))
+  (is (= (sut/mk-credentials test-creds)
+         (.getCredentials (sut/fixed-credentials test-creds)))))
 
 (deftest ^:integration get-project-test
   (let [test-project-id (:project-id (load-test-config))]
     (testing "retrieval of the project-id from a service account file"
       (is (= test-project-id
              (-> (SubscriptionAdminSettings/newBuilder)
-                 (.setCredentialsProvider (fixed-credentials test-creds))
+                 (.setCredentialsProvider (sut/fixed-credentials test-creds))
                  .build
-                 get-project))))))
+                 sut/get-project))))))
 
 (deftest ^:integration build-service-test
 
@@ -38,12 +38,12 @@
       (let [test-config      (load-test-config)
             test-project-id  (:project-id test-config)
             test-svc-account (:svc-account test-config)
-            ^Service service (build-service builder {:project-id  test-project-id
-                                                     :credentials test-creds})
+            ^Service service (sut/build-service builder {:project-id  test-project-id
+                                                         :credentials test-creds})
             {:keys [project-id credentials retry-settings]} (->clj (.getOptions service))]
         (is (and (= test-project-id project-id)
                  (= test-svc-account credentials)
-                 (= (->clj default-retry-settings) retry-settings))))
+                 (= (->clj sut/default-retry-settings) retry-settings))))
 
       (BigQueryOptions/newBuilder)
       (DatastoreOptions/newBuilder)
@@ -56,7 +56,7 @@
                      :retry-delay-multiplier 1.5
                      :max-attempts           1000
                      :jittered?              false}}
-          service  (build-service (StorageOptions/newBuilder) opts)
+          service  (sut/build-service (StorageOptions/newBuilder) opts)
           settings (bean (:retrySettings (bean (.getOptions service))))
           expected {:initialRetryDelay    (Duration/ofSeconds 1)
                     :jittered             false
@@ -68,7 +68,7 @@
 
 (deftest array-type-test
   (are [type expected]
-    (is (= expected (array-type type)))
+    (is (= expected (sut/array-type type)))
     Byte/TYPE "[B"
     BigQuery$QueryOption "[Lcom.google.cloud.bigquery.BigQuery$QueryOption;"
     RetryOption "[Lcom.google.cloud.RetryOption;"))
