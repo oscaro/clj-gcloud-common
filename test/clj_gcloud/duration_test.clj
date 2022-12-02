@@ -1,12 +1,12 @@
 (ns clj-gcloud.duration-test
   (:require
-   [clj-gcloud.duration :refer [->duration]]
+   [clj-gcloud.duration :as sut]
    [clojure.test :refer [are deftest]])
   (:import (org.threeten.bp Duration)))
 
 (deftest ->duration-test
   (are [dsl duration]
-    (= duration (->duration dsl))
+    (= duration (sut/->duration dsl))
     [5 :days] (Duration/ofDays 5)
     [10 :hours] (Duration/ofHours 10)
     [30 :minutes] (Duration/ofMinutes 30)
