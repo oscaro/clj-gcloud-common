@@ -22,7 +22,7 @@
 ;; RetrySettings
 (def default-retry-settings (ServiceOptions/getDefaultRetrySettings))
 
-(defn ^RetryOption ->RetryOption
+(defn ->RetryOption ^RetryOption
   [[k v]]
   (case k
     :total-timeout (RetryOption/totalTimeout (d/->duration v))
