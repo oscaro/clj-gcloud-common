@@ -1,5 +1,9 @@
 # clj-gcloud-common
 
+## [Unreleased]
+### Changed
+* Bumped dependencies - 0.192.0 bom
+
 ## [0.185-1.0] - 2023-01-24
 ### Changed
 * Bumped dependencies
