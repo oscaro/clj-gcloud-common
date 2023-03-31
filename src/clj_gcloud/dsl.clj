@@ -3,7 +3,7 @@
    [clojure.walk :refer [postwalk]])
   (:import
    (com.google.api.client.json JsonFactory)
-   (com.google.api.client.json.jackson2 JacksonFactory)
+   (com.google.api.client.json.gson GsonFactory)
    (com.google.common.base CaseFormat Converter)
    (java.lang.reflect Method)
    (java.util EnumSet)))
@@ -54,7 +54,7 @@
      (fn [x] (if (map? x) (into {} (map (comp xform-key xform-val) x)) x))
      m)))
 
-(def ^JsonFactory json-factory (JacksonFactory/getDefaultInstance))
+(def ^JsonFactory json-factory (GsonFactory/getDefaultInstance))
 
 (defn ^Method get-static-method
   "Returns a static method"
