@@ -23,6 +23,7 @@
    ;; This must correspond to the version pinned in BOM files.
    [com.google.cloud/google-cloud-core "2.13.0"]
    [com.google.cloud/google-cloud-core-http "2.13.0"]
+   [com.google.http-client/google-http-client-gson "1.43.1"]
    ;; grpc-api is required to compile ‘clj-gcloud.common’ namespace
    [io.grpc/grpc-api "1.54.0"]
    ;; Handle version mismatches between grpc-api and other deps.
