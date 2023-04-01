@@ -17,14 +17,14 @@
 (def ^:private ^Converter uu->lh
   (.converterTo CaseFormat/UPPER_UNDERSCORE CaseFormat/LOWER_HYPHEN))
 
-(defn ^String kw->field-name
+(defn kw->field-name
   "Converts a keyword into a field name"
-  [kw]
+  ^String [kw]
   (->> kw name (.convert lh->lc)))
 
-(defn ^String kw->enum-str
+(defn kw->enum-str
   "Converts a keyword into a enum string"
-  [kw]
+  ^String [kw]
   (->> kw name (.convert lh->uu)))
 
 (defn enum->kw
@@ -56,9 +56,9 @@
 
 (def ^JsonFactory json-factory (GsonFactory/getDefaultInstance))
 
-(defn ^Method get-static-method
+(defn get-static-method
   "Returns a static method"
-  [^Class cls n arg-classes]
+  ^Method [^Class cls n arg-classes]
   (let [m (.getDeclaredMethod cls n (into-array Class arg-classes))]
     (.setAccessible m true)
     m))
