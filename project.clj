@@ -45,34 +45,34 @@
   ;; google-cloud-bom, we'll continue to use that. For this release,
   ;; we'll looking at versions specified here:
   ;;
-  ;; https://mvnrepository.com/artifact/com.google.cloud/google-cloud-bom/0.199.0
+  ;; https://mvnrepository.com/artifact/com.google.cloud/google-cloud-bom/0.209.0
   ;;
   ;; which seem to correspond to
   ;;
-  ;; https://mvnrepository.com/artifact/com.google.cloud/libraries-bom/26.18.0
-  [[com.google.cloud/google-cloud-bom "0.207.0"
+  ;; https://mvnrepository.com/artifact/com.google.cloud/libraries-bom/26.28.0
+  [[com.google.cloud/google-cloud-bom "0.209.0"
     :extension "pom"
     :scope "import"]
-   [com.google.cloud/google-cloud-shared-dependencies "3.19.0"
+   [com.google.cloud/google-cloud-shared-dependencies "3.20.0"
     :extension "pom"
     :scope "import"]]
   :dependencies
   [[org.clojure/clojure "1.11.1" :scope "provided"]
    ;; This must correspond to the version pinned in BOM files.
-   [com.google.cloud/google-cloud-core "2.27.0"]
-   [com.google.cloud/google-cloud-core-http "2.27.0"]
+   [com.google.cloud/google-cloud-core "2.28.0"]
+   [com.google.cloud/google-cloud-core-http "2.28.0"]
    [com.google.http-client/google-http-client-gson "1.43.3"]
    ;; grpc-api is required to compile ‘clj-gcloud.common’ namespace
-   [io.grpc/grpc-api "1.59.0"]
+   [io.grpc/grpc-api "1.60.0"]
    ;; Handle version mismatches between grpc-api and other deps.
    [com.google.errorprone/error_prone_annotations "2.23.0"]]
   :profiles
   {:dev
    {:dependencies
-    [[com.google.cloud/google-cloud-bigquery "2.34.0"]
-     [com.google.cloud/google-cloud-pubsub "1.125.11"]
-     [com.google.cloud/google-cloud-datastore "2.17.5"]
-     [com.google.cloud/google-cloud-storage "2.29.0"]
+    [[com.google.cloud/google-cloud-bigquery "2.35.0"]
+     [com.google.cloud/google-cloud-pubsub "1.125.13"]
+     [com.google.cloud/google-cloud-datastore "2.17.6"]
+     [com.google.cloud/google-cloud-storage "2.30.1"]
      [org.clojure/tools.namespace "1.4.4"]]
     :source-paths   ["dev" "test"]
     :resource-paths ["test-resources"]
