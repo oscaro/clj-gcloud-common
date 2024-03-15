@@ -5,6 +5,7 @@
 ### Added
 
 ### Changed
+* Bumped dependencies - bom 0.215.0 / 26.34.0
 
 ### Fixed
 
