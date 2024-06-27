@@ -1,14 +1,8 @@
 # clj-gcloud-common
 
-## [Unreleased]
-
-### Added
-
+## [0.215-1.0] - 2023-06-27
 ### Changed
 * Bumped dependencies - bom 0.215.0 / 26.34.0
-
-### Fixed
-
 
 ## [0.209-1.0] - 2023-12-14
 ### Changed
@@ -62,7 +56,8 @@ New java libs; Durations are now expressed as tuples; Minor refactor
 ## [0.71-1.1] - 2019-04-17
 First public release.
 
-[Unreleased]: https://github.com/oscaro/clj-gcloud-common/-/compare/0.209-1.0...devel
+[Unreleased]: https://github.com/oscaro/clj-gcloud-common/-/compare/0.215-1.0...devel
+[0.215-1.0]: https://github.com/oscaro/clj-gcloud-common/-/compare/0.209-1.0...0.215-1.0
 [0.209-1.0]: https://github.com/oscaro/clj-gcloud-common/-/compare/0.207-1.0...0.209-1.0
 [0.207-1.0]: https://github.com/oscaro/clj-gcloud-common/-/compare/0.199-1.0...0.207-1.0
 [0.199-1.0]: https://github.com/oscaro/clj-gcloud-common/-/compare/0.185-1.0...0.199-1.0
