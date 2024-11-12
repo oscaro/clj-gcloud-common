@@ -4,7 +4,7 @@
    [clojure.java.io :as io]
    [clojure.spec.alpha :as s])
   (:import
-   (com.google.auth.oauth2 ServiceAccountCredentials)
+   (com.google.auth.oauth2 GoogleCredentials ImpersonatedCredentials ServiceAccountCredentials)
    (com.google.api.gax.core CredentialsProvider BackgroundResource)
    (com.google.api.gax.retrying RetrySettings)
    (com.google.api.gax.rpc ClientSettings)
@@ -54,10 +54,66 @@
          (RetryOption/mergeToSettings default-retry-settings))
     (throw (ex-info (s/explain-str ::retry-settings settings) settings))))
 
+
+(defn mk-default-credentials
+  ([]
+   (mk-default-credentials {}))
+  ([opts]
+   (GoogleCredentials/getApplicationDefault)))
+
 ;; Credentials
+(defn mk-service-account-credentials
+  [{:keys [credentials]}]
+  (ServiceAccountCredentials/fromStream (io/input-stream credentials)))
+
+(defn mk-impersonated-credentials
+  [{:keys [credentials target-principal delegates scopes] :as spec}]
+  (let [builder (ImpersonatedCredentials/newBuilder)
+        credentials (if credentials
+                      (mk-service-account-credentials {:type :service-account-file :credentials credentials})
+                      (mk-default-credentials {:type :application-default}))
+        scopes (or
+                 scopes
+                 [])
+        builder (-> builder
+                    (.setSourceCredentials credentials)
+                    (.setTargetPrincipal target-principal)
+                    (.setScopes scopes))]
+    (.build
+      (cond-> builder
+              delegates (.setDelegates delegates)))))
+
+
+(defmulti mk-credentials*
+  (fn [{:keys [type credentials target-principal]}]
+    (or
+      type
+      (cond target-principal
+              :impersonated
+            credentials
+              :service-account-file
+            :else
+              :application-default))))
+
+(defmethod mk-credentials* :default
+  [opts]
+  (mk-default-credentials opts))
+
+
+(defmethod mk-credentials* :service-account-file
+  [opts]
+  (mk-service-account-credentials opts))
+
+(defmethod mk-credentials* :impersonated
+  [opts]
+  (mk-impersonated-credentials opts))
+
 (defn mk-credentials
-  [json-path]
-  (ServiceAccountCredentials/fromStream (io/input-stream json-path)))
+  [spec]
+  (if-not (string? spec)
+    (mk-credentials* spec)
+    (mk-service-account-credentials {:credentials spec})))
+
 
 (defn fixed-credentials
   "Returns a credentials provider which will always returns the
@@ -103,14 +159,17 @@
 (s/def :service.options/retry-settings ::retry-settings)
 (s/def ::service-options (s/keys :opt-un [:service.options/project-id
                                           :service.options/credentials
-                                          :service.options/retry-settings]))
+                                          :service.options/retry-settings
+                                          :service.options/target-principal
+                                          :service.options/delegates
+                                          :service.options/scopes]))
 (defn build-service
   ^Service
-  [^ServiceOptions$Builder builder {:keys [project-id credentials retry-settings] :as opts}]
+  [^ServiceOptions$Builder builder {:keys [project-id credentials target-principal retry-settings] :as opts}]
   (if (or (nil? opts) (s/valid? ::service-options opts))
     (let [builder (cond-> builder
                     project-id (.setProjectId project-id)
-                    credentials (.setCredentials (mk-credentials credentials))
+                    (or credentials target-principal) (.setCredentials (mk-credentials* opts))
                     retry-settings (.setRetrySettings (mk-retry-settings retry-settings)))]
       (.getService ^ServiceOptions (.build builder)))
     (throw
