@@ -54,7 +54,6 @@
          (RetryOption/mergeToSettings default-retry-settings))
     (throw (ex-info (s/explain-str ::retry-settings settings) settings))))
 
-(declare mk-credentials*)
 
 (defn mk-default-credentials
   ([]
@@ -85,11 +84,6 @@
               delegates (.setDelegates delegates)))))
 
 
-;; alias for backward compatibility
-(defn mk-credentials
-  [json-path]
-  (mk-service-account-credentials {:credentials json-path}))
-
 (defmulti mk-credentials*
   (fn [{:keys [type credentials target-principal]}]
     (or
@@ -113,6 +107,12 @@
 (defmethod mk-credentials* :impersonated
   [opts]
   (mk-impersonated-credentials opts))
+
+(defn mk-credentials
+  [spec]
+  (if-not (string? spec)
+    (mk-credentials* spec)
+    (mk-service-account-credentials {:credentials spec})))
 
 
 (defn fixed-credentials
