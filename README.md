@@ -19,7 +19,7 @@ You need to create two files in order to run the tests:
 
 ## License
 
-Copyright © 2017-2022 Oscaro
+Copyright © 2017-2025 Oscaro
 
 Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.
