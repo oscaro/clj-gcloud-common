@@ -45,34 +45,36 @@
   ;; google-cloud-bom, we'll continue to use that. For this release,
   ;; we'll looking at versions specified here:
   ;;
-  ;;  https://mvnrepository.com/artifact/com.google.cloud/google-cloud-bom/0.234.0
+  ;;  https://mvnrepository.com/artifact/com.google.cloud/google-cloud-bom/0.240.0
   ;;
-  ;; which seem to correspond to
+  ;; which corresponds to
   ;;
-  ;;  https://mvnrepository.com/artifact/com.google.cloud/libraries-bom/26.53.0
-  [[com.google.cloud/google-cloud-bom "0.234.0"
+  ;;  https://mvnrepository.com/artifact/com.google.cloud/libraries-bom/26.59.0
+  [[com.google.cloud/google-cloud-bom "0.240.0"
     :extension "pom"
     :scope "import"]
-   [com.google.cloud/google-cloud-shared-dependencies "3.42.0"
+   [com.google.cloud/google-cloud-shared-dependencies "3.45.1"
     :extension "pom"
     :scope "import"]]
   :dependencies
   [[org.clojure/clojure "1.11.3" :scope "provided"]
    ;; This must correspond to the version pinned in BOM files.
-   [com.google.cloud/google-cloud-core "2.49.1"]
-   [com.google.cloud/google-cloud-core-http "2.49.1"]
-   [com.google.http-client/google-http-client-gson "1.45.3"]
+   [com.google.cloud/google-cloud-core "2.53.1"]
+   [com.google.cloud/google-cloud-core-http "2.53.1"]
+   ;; based on version in the corresponding http-client-bom. See,
+   ;; https://mvnrepository.com/artifact/com.google.http-client/google-http-client-bom
+   [com.google.http-client/google-http-client-gson "1.46.3"]
    ;; grpc-api is required to compile ‘clj-gcloud.common’ namespace
-   [io.grpc/grpc-api "1.70.0"]
+   [io.grpc/grpc-api "1.71.0"]
    ;; Handle version mismatches between grpc-api and other deps.
-   [com.google.errorprone/error_prone_annotations "2.36.0"]]
+   [com.google.errorprone/error_prone_annotations "2.37.0"]]
   :profiles
   {:dev
    {:dependencies
-    [[com.google.cloud/google-cloud-bigquery "2.46.0" :exclusions [org.slf4j/slf4j-api]]
-     [com.google.cloud/google-cloud-pubsub "1.136.0"]
-     [com.google.cloud/google-cloud-datastore "2.25.2"]
-     [com.google.cloud/google-cloud-storage "2.47.0" :exclusions [org.slf4j/slf4j-api]]
+    [[com.google.cloud/google-cloud-bigquery "2.49.0" :exclusions [org.slf4j/slf4j-api]]
+     [com.google.cloud/google-cloud-pubsub "1.138.0"]
+     [com.google.cloud/google-cloud-datastore "2.27.1"]
+     [com.google.cloud/google-cloud-storage "2.50.0" :exclusions [org.slf4j/slf4j-api]]
      [org.clojure/tools.namespace "1.5.0"]]
     :source-paths   ["dev" "test"]
     :resource-paths ["test-resources"]
