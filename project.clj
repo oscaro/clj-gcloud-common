@@ -1,4 +1,4 @@
-(defproject com.oscaro/clj-gcloud-common "0.234-2.0-SNAPSHOT"
+(defproject com.oscaro/clj-gcloud-common "0.240-1.0"
   :description "Common library for all google cloud clojure wrappers"
   :url "https://github.com/oscaro/clj-gcloud-common"
   :license {:name "Eclipse Public License"
@@ -57,7 +57,7 @@
     :extension "pom"
     :scope "import"]]
   :dependencies
-  [[org.clojure/clojure "1.11.3" :scope "provided"]
+  [[org.clojure/clojure "1.11.4" :scope "provided"]
    ;; This must correspond to the version pinned in BOM files.
    [com.google.cloud/google-cloud-core "2.53.1"]
    [com.google.cloud/google-cloud-core-http "2.53.1"]
