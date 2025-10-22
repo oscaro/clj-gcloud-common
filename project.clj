@@ -53,31 +53,31 @@
   ;; which corresponds to
   ;;
   ;;  https://mvnrepository.com/artifact/com.google.cloud/libraries-bom/26.59.0
-  [[com.google.cloud/google-cloud-bom "0.240.0"
+  [[com.google.cloud/google-cloud-bom "0.251.0"
     :extension "pom"
     :scope "import"]
-   [com.google.cloud/google-cloud-shared-dependencies "3.45.1"
+   [com.google.cloud/google-cloud-shared-dependencies "3.53.0"
     :extension "pom"
     :scope "import"]]
   :dependencies
   [[org.clojure/clojure "1.11.4" :scope "provided"]
    ;; This must correspond to the version pinned in BOM files.
-   [com.google.cloud/google-cloud-core "2.53.1"]
-   [com.google.cloud/google-cloud-core-http "2.53.1"]
+   [com.google.cloud/google-cloud-core "2.61.0"]
+   [com.google.cloud/google-cloud-core-http "2.61.0"]
    ;; based on version in the corresponding http-client-bom. See,
    ;; https://mvnrepository.com/artifact/com.google.http-client/google-http-client-bom
-   [com.google.http-client/google-http-client-gson "1.46.3"]
+   [com.google.http-client/google-http-client-gson "2.0.2"]
    ;; grpc-api is required to compile ‘clj-gcloud.common’ namespace
-   [io.grpc/grpc-api "1.71.0"]
+   [io.grpc/grpc-api "1.76.0"]
    ;; Handle version mismatches between grpc-api and other deps.
-   [com.google.errorprone/error_prone_annotations "2.37.0"]]
+   [com.google.errorprone/error_prone_annotations "2.42.0"]]
   :profiles
   {:dev
    {:dependencies
-    [[com.google.cloud/google-cloud-bigquery "2.49.0" :exclusions [org.slf4j/slf4j-api]]
-     [com.google.cloud/google-cloud-pubsub "1.138.0"]
-     [com.google.cloud/google-cloud-datastore "2.27.1"]
-     [com.google.cloud/google-cloud-storage "2.50.0" :exclusions [org.slf4j/slf4j-api]]
+    [[com.google.cloud/google-cloud-bigquery "2.55.3" :exclusions [org.slf4j/slf4j-api]]
+     [com.google.cloud/google-cloud-pubsub "1.143.0"]
+     [com.google.cloud/google-cloud-datastore "2.32.3"]
+     [com.google.cloud/google-cloud-storage "2.59.0" :exclusions [org.slf4j/slf4j-api]]
      [org.clojure/tools.namespace "1.5.0"]]
     :source-paths   ["dev" "test"]
     :resource-paths ["test-resources"]
