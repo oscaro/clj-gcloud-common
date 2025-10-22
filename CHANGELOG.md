@@ -8,6 +8,9 @@
 
 ### Fixed
 
+## [0.251-1.0]
+### Changed
+* Bumped dependencies - bom 0.251.0
 
 ## [0.240-1.0]
 ### Changed
