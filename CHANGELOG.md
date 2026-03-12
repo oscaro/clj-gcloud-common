@@ -8,6 +8,17 @@
 
 ### Fixed
 
+## [0.258-1.0]
+### Changed
+* Bumped dependencies - bom 0.258.0
+* bump artefact release to 0.258-1.0-SNAPSHOT
+* bump error_prone_annotations "2.48.0"
+* bump grpc-api "1.79.0"
+* bump google-http-client-gson "2.1.0"
+* bump google-cloud-core-http "2.65.0"
+* bump google-cloud-core "2.65.0"
+* bumped BOM google-cloud-bom,google-cloud-shared-dependencies
+
 ## [0.251-1.0]
 ### Changed
 * Bumped dependencies - bom 0.251.0
