@@ -70,7 +70,7 @@
    ;; grpc-api is required to compile ‘clj-gcloud.common’ namespace
    [io.grpc/grpc-api "1.79.0"]
    ;; Handle version mismatches between grpc-api and other deps.
-   [com.google.errorprone/error_prone_annotations "2.42.0"]]
+   [com.google.errorprone/error_prone_annotations "2.48.0"]]
   :profiles
   {:dev
    {:dependencies
