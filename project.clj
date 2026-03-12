@@ -66,7 +66,7 @@
    [com.google.cloud/google-cloud-core-http "2.65.0"]
    ;; based on version in the corresponding http-client-bom. See,
    ;; https://mvnrepository.com/artifact/com.google.http-client/google-http-client-bom
-   [com.google.http-client/google-http-client-gson "2.0.2"]
+   [com.google.http-client/google-http-client-gson "2.1.0"]
    ;; grpc-api is required to compile ‘clj-gcloud.common’ namespace
    [io.grpc/grpc-api "1.76.0"]
    ;; Handle version mismatches between grpc-api and other deps.
