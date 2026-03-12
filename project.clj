@@ -1,4 +1,4 @@
-(defproject com.oscaro/clj-gcloud-common "0.251-1.0"
+(defproject com.oscaro/clj-gcloud-common "0.258-1.0"
   :description "Common library for all google cloud clojure wrappers"
   :url "https://github.com/oscaro/clj-gcloud-common"
   :license {:name "Eclipse Public License"
@@ -53,24 +53,24 @@
   ;; which corresponds to
   ;;
   ;;  https://mvnrepository.com/artifact/com.google.cloud/libraries-bom/26.59.0
-  [[com.google.cloud/google-cloud-bom "0.251.0"
+  [[com.google.cloud/google-cloud-bom "0.258.0"
     :extension "pom"
     :scope "import"]
-   [com.google.cloud/google-cloud-shared-dependencies "3.53.0"
+   [com.google.cloud/google-cloud-shared-dependencies "3.57.0"
     :extension "pom"
     :scope "import"]]
   :dependencies
   [[org.clojure/clojure "1.11.4" :scope "provided"]
    ;; This must correspond to the version pinned in BOM files.
-   [com.google.cloud/google-cloud-core "2.61.0"]
-   [com.google.cloud/google-cloud-core-http "2.61.0"]
+   [com.google.cloud/google-cloud-core "2.65.0"]
+   [com.google.cloud/google-cloud-core-http "2.65.0"]
    ;; based on version in the corresponding http-client-bom. See,
    ;; https://mvnrepository.com/artifact/com.google.http-client/google-http-client-bom
-   [com.google.http-client/google-http-client-gson "2.0.2"]
+   [com.google.http-client/google-http-client-gson "2.1.0"]
    ;; grpc-api is required to compile ‘clj-gcloud.common’ namespace
-   [io.grpc/grpc-api "1.76.0"]
+   [io.grpc/grpc-api "1.79.0"]
    ;; Handle version mismatches between grpc-api and other deps.
-   [com.google.errorprone/error_prone_annotations "2.42.0"]]
+   [com.google.errorprone/error_prone_annotations "2.48.0"]]
   :profiles
   {:dev
    {:dependencies
