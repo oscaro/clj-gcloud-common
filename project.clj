@@ -62,7 +62,7 @@
   :dependencies
   [[org.clojure/clojure "1.11.4" :scope "provided"]
    ;; This must correspond to the version pinned in BOM files.
-   [com.google.cloud/google-cloud-core "2.61.0"]
+   [com.google.cloud/google-cloud-core "2.65.0"]
    [com.google.cloud/google-cloud-core-http "2.61.0"]
    ;; based on version in the corresponding http-client-bom. See,
    ;; https://mvnrepository.com/artifact/com.google.http-client/google-http-client-bom
