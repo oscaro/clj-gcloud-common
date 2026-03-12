@@ -53,10 +53,10 @@
   ;; which corresponds to
   ;;
   ;;  https://mvnrepository.com/artifact/com.google.cloud/libraries-bom/26.59.0
-  [[com.google.cloud/google-cloud-bom "0.251.0"
+  [[com.google.cloud/google-cloud-bom "0.258.0"
     :extension "pom"
     :scope "import"]
-   [com.google.cloud/google-cloud-shared-dependencies "3.53.0"
+   [com.google.cloud/google-cloud-shared-dependencies "3.57.0"
     :extension "pom"
     :scope "import"]]
   :dependencies
